@@ -1,6 +1,7 @@
 import json
 import random
 import requests
+import string
 
 server_url = "http://127.0.0.1:8080"
 
@@ -24,6 +25,10 @@ def post(url, data):
     return request(method='POST', uri=url, data=data, headers=headers).json()
 
 
+def get_random_string():
+    return ''.join(random.choice(string.ascii_lowercase) for _ in range(10))
+
+
 def main():
     global server_url
     print('Starting initialization')
@@ -33,8 +38,8 @@ def main():
             post(server_url + '/profiles',
                  json.dumps(
                      {"cellId": cellId,
-                      "name": "asdasd",
-                      "email": "as@email.com",
+                      "name": get_random_string(),
+                      "email": get_random_string() + "@gmail.com",
                       "activationDate": 123123123}))
 
     print('Initialization finished successfuly')
