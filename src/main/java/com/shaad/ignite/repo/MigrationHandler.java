@@ -47,7 +47,7 @@ public class MigrationHandler {
     private void v1() {
         IgniteCache cache = ignite.getOrCreateCache(MAIN);
         SqlFieldsQuery createProfile = new SqlFieldsQuery(
-                "CREATE TABLE IF NOT EXISTS public.Profile (ctn int, name varchar, email varchar, PRIMARY KEY (ctn))");
+                "CREATE TABLE IF NOT EXISTS public.Profile (ctn int, name varchar, email varchar, activationDate long, PRIMARY KEY (ctn))");
         cache.query(createProfile);
         SqlFieldsQuery createCell2Ctn = new SqlFieldsQuery(
                 "CREATE TABLE IF NOT EXISTS public.Cell2Ctn(cell_id int, ctn int PRIMARY KEY)");

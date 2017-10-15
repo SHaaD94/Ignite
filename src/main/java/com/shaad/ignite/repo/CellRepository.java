@@ -11,6 +11,8 @@ public interface CellRepository {
 
     void saveCtn(long cellId, long ctn);
 
+    boolean doesCtnExist(long ctn);
+
     void saveProfile(long ctn, Profile profile);
 
     Collection<Profile> getProfilesByCellId(long cellId);

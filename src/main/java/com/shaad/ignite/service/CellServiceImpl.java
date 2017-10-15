@@ -3,6 +3,7 @@ package com.shaad.ignite.service;
 import com.google.inject.Inject;
 import com.shaad.ignite.domain.Profile;
 import com.shaad.ignite.dto.ProfileDTO;
+import com.shaad.ignite.exception.CTNDoesNotExistException;
 import com.shaad.ignite.exception.CellDoesNotExistException;
 import com.shaad.ignite.repo.CellRepository;
 
@@ -32,6 +33,9 @@ public class CellServiceImpl implements CellService {
 
     @Override
     public void saveProfile(ProfileDTO profileDTO) {
+        if (!cellRepository.doesCtnExist(profileDTO.getCtn())) {
+            throw new CTNDoesNotExistException(profileDTO.getCtn());
+        }
         cellRepository.saveProfile(profileDTO.getCtn(),
                 new Profile(profileDTO.getName(), profileDTO.getEmail(), profileDTO.getActivationDate()));
     }

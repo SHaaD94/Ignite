@@ -24,9 +24,9 @@ public class CtnController implements Controller {
 
     private Object saveCtn(Req req) {
         Object cellId = req.data("cell_id");
-        Object ctn = req.data("ctn");
-        checkArgument(cellId != null && ctn != null, "Cell_id and ctn should exist");
-        cellService.saveCtn(Long.parseLong(cellId.toString()), Long.parseLong(ctn.toString()));
+        Object id = req.data("id");
+        checkArgument(cellId != null && id != null, "Cell_id and ctn should exist");
+        cellService.saveCtn(Long.parseLong(cellId.toString()), Long.parseLong(id.toString()));
         return new SuccessDTO();
     }
 }

@@ -30,16 +30,17 @@ public class ProfileController implements Controller {
         Object ctn = req.data("ctn");
         String name = req.data("name");
         String email = req.data("email");
+        Object activationDate = req.data("activationDate");
         checkArgument(ctn != null, "Ctn should exist");
         checkArgument(!Strings.isNullOrEmpty(name), "Name should exist");
         checkArgument(!Strings.isNullOrEmpty(email), "Email should exist");
-        //checkArgument(req.data("date"), "Date should exist");
+        checkArgument(activationDate != null, "Activation date should exist");
 
         cellService.saveProfile(new ProfileDTO(
                 Long.parseLong(ctn.toString()),
-                req.data(name),
-                req.data(email),
-                new Date()));
+                name,
+                email,
+                new Date(Long.parseLong(activationDate.toString()))));
 
         return new SuccessDTO();
     }

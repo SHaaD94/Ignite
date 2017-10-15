@@ -3,6 +3,7 @@ package com.shaad.ignite.repo;
 import com.google.inject.Inject;
 import com.shaad.ignite.domain.Profile;
 import org.apache.ignite.Ignite;
+import org.apache.ignite.IgniteCache;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
 
 import java.util.Collection;
@@ -16,9 +17,11 @@ public class CellRepositoryImpl implements CellRepository {
     private static final String INSERT_CTN_QUERY_TEMPLATE =
             "INSERT INTO public.Cell2Ctn(cell_id,ctn) values(?,?)";
     private static final String INSERT_PROFILE_QUERY_TEMPLATE =
-            "INSERT INTO public.Profile(ctn,name,email) values(?,?,?)";
+            "INSERT INTO public.Profile(ctn,name,email,activationDate) values(?,?,?,?)";
+    private static final String CHECK_CTN_EXISTANCE_QUERY_TEMPLATE =
+            "SELECT ctn FROM public.cell2ctn where ctn=?";
     private static final String SELECT_PROFILES_BY_CELL_ID_TEMPLATE =
-            "SELECT * FROM public.profile where ctn " +
+            "SELECT Profile.name,Profile.email,Profile.activationDate FROM public.profile where ctn " +
                     "in (select ctn from public.cell2ctn where cell_id=?)";
 
     private final Ignite ignite;
@@ -27,37 +30,54 @@ public class CellRepositoryImpl implements CellRepository {
     public CellRepositoryImpl(Ignite ignite) {
         this.ignite = ignite;
         ignite.getOrCreateCache(CELLS);
+
     }
 
     @Override
     public boolean doesCellExist(long cellId) {
-        return ignite.cache(CELLS).get(cellId) != null;
+        return cellsCache().get(cellId) != null;
     }
 
     @Override
     public void saveCell(long cellId) {
-        ignite.cache(CELLS).put(cellId, cellId);
+        cellsCache().put(cellId, cellId);
     }
 
     @Override
     public void saveCtn(long cellId, long ctn) {
-        ignite.cache(MAIN).query(new SqlFieldsQuery(INSERT_CTN_QUERY_TEMPLATE).setArgs(cellId, ctn));
+        mainCache().query(new SqlFieldsQuery(INSERT_CTN_QUERY_TEMPLATE).setArgs(cellId, ctn));
+    }
+
+    @Override
+    public boolean doesCtnExist(long ctn) {
+        return !mainCache()
+                .query(new SqlFieldsQuery(CHECK_CTN_EXISTANCE_QUERY_TEMPLATE).setArgs(ctn))
+                .getAll()
+                .isEmpty();
     }
 
     @Override
     public void saveProfile(long ctn, Profile profile) {
-        ignite.cache(MAIN).query(
+        mainCache().query(
                 new SqlFieldsQuery(INSERT_PROFILE_QUERY_TEMPLATE)
-                        .setArgs(ctn, profile.getName(), profile.getName()));
+                        .setArgs(ctn, profile.getName(), profile.getName(), profile.getActivationDate().getTime()));
     }
 
     @Override
     public Collection<Profile> getProfilesByCellId(long cellId) {
-        return ignite.cache(MAIN).query(
+        return mainCache().query(
                 new SqlFieldsQuery(SELECT_PROFILES_BY_CELL_ID_TEMPLATE).setArgs(cellId))
                 .getAll()
                 .stream()
-                .map(x -> new Profile((String) x.get(1), (String) x.get(2), new Date()))
+                .map(x -> new Profile((String) x.get(0), (String) x.get(1), new Date((Long) x.get(2))))
                 .collect(Collectors.toList());
+    }
+
+    private IgniteCache<Object, Object> mainCache() {
+        return ignite.cache(MAIN);
+    }
+
+    private IgniteCache<Object, Object> cellsCache() {
+        return ignite.cache(CELLS);
     }
 }
