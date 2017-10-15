@@ -1,0 +1,26 @@
+version: '3'
+services:
+  ignite:
+    image: apacheignite/ignite:latest
+    network_mode: "host"
+    ports:
+      - 11211:11211
+    restart: always
+
+  web-service:
+    image: ignite-project/ignite:1.0-SNAPSHOT
+    ports:
+      - 8080:8080
+    network_mode: "host"
+    restart: always
+    depends_on:
+      - ignite
+    command: >
+      /bin/bash -c "
+        while ! nc -z ignite 11211;
+        do
+          echo sleeping;
+          sleep 1;
+        done;
+        echo Connected!;
+      "
