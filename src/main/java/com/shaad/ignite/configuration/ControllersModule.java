@@ -2,9 +2,7 @@ package com.shaad.ignite.configuration;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
-import com.shaad.ignite.controller.CellController;
-import com.shaad.ignite.controller.Controller;
-import com.shaad.ignite.controller.ExceptionController;
+import com.shaad.ignite.controller.*;
 
 public class ControllersModule extends AbstractModule {
     @Override
@@ -12,5 +10,7 @@ public class ControllersModule extends AbstractModule {
         Multibinder<Controller> controllers = Multibinder.newSetBinder(binder(), Controller.class);
         controllers.addBinding().to(CellController.class);
         controllers.addBinding().to(ExceptionController.class);
+        controllers.addBinding().to(CtnController.class);
+        controllers.addBinding().to(ProfileController.class);
     }
 }

@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.shaad.ignite.repo.CellRepository;
 import com.shaad.ignite.repo.CellRepositoryImpl;
+import com.shaad.ignite.repo.MigrationHandler;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.configuration.ConnectorConfiguration;
@@ -22,5 +23,6 @@ public class RepositoryModule extends AbstractModule {
 
         bind(Ignite.class).toInstance(Ignition.start(cfg));
         bind(CellRepository.class).to(CellRepositoryImpl.class).in(Singleton.class);
+        bind(MigrationHandler.class);
     }
 }

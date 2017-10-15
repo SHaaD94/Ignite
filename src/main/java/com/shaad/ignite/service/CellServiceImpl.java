@@ -18,6 +18,25 @@ public class CellServiceImpl implements CellService {
     }
 
     @Override
+    public void saveCell(long cellId) {
+        cellRepository.saveCell(cellId);
+    }
+
+    @Override
+    public void saveCtn(long cellId, long ctn) {
+        if (!cellRepository.doesCellExist(cellId)) {
+            throw new CellDoesNotExistException(cellId);
+        }
+        cellRepository.saveCtn(cellId, ctn);
+    }
+
+    @Override
+    public void saveProfile(ProfileDTO profileDTO) {
+        cellRepository.saveProfile(profileDTO.getCtn(),
+                new Profile(profileDTO.getName(), profileDTO.getEmail(), profileDTO.getActivationDate()));
+    }
+
+    @Override
     public Collection<ProfileDTO> getProfilesByCellId(long cellId) {
         if (!cellRepository.doesCellExist(cellId)) {
             throw new CellDoesNotExistException(cellId);
