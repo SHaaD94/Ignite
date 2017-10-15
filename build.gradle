@@ -25,6 +25,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 sourceCompatibility = 1.8
 
 ext {
+    igniteVersion = '2.2.0'
     flywayVersion = '4.2.0'
     guiceVersion = '4.1.0'
     jacksonVersion = '2.9.0'
@@ -36,6 +37,8 @@ ext {
 }
 
 dependencies {
+    compile "org.apache.ignite:ignite-core:$igniteVersion"
+
     compile "com.google.inject:guice:$guiceVersion"
     compile "com.google.inject.extensions:guice-multibindings:$guiceVersion"
     compile "com.typesafe:config:$typesafeConfigVersion"
