@@ -7,7 +7,9 @@ public class Injector {
 
     public Injector() {
         injector = Guice.createInjector(
-                new ControllersModule()
+                new ControllersModule(),
+                new RepositoryModule(),
+                new ServiceModule()
         );
     }
 

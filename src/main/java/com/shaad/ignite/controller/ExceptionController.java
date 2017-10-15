@@ -1,6 +1,7 @@
 package com.shaad.ignite.controller;
 
 import com.shaad.ignite.dto.ExceptionDTO;
+import com.shaad.ignite.exception.CellDoesNotExistException;
 import org.rapidoid.http.NotFound;
 import org.rapidoid.http.Resp;
 import org.rapidoid.setup.My;
@@ -11,10 +12,17 @@ public class ExceptionController implements Controller {
         My.errorHandler((req, resp, error) -> {
             if (error.getClass().equals(NotFound.class)) {
                 return notFound(resp);
+            } else if (error.getClass().equals(CellDoesNotExistException.class)) {
+                return cellDoesNotExist(resp, (CellDoesNotExistException) error);
             } else {
                 return badRequest(resp, error);
             }
         });
+    }
+
+    private ExceptionDTO cellDoesNotExist(Resp resp, CellDoesNotExistException error) {
+        resp.code(404);
+        return new ExceptionDTO(error.getMessage());
     }
 
     private ExceptionDTO badRequest(Resp resp, Throwable error) {
