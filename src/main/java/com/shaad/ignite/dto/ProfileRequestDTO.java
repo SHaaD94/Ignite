@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Collection;
 
 public class ProfileRequestDTO {
-    @JsonProperty("results")
+    @JsonProperty("total")
     private final Integer total;
 
     @JsonProperty("results")

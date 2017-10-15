@@ -2,6 +2,7 @@ import json
 import random
 import requests
 import string
+import time
 
 server_url = "http://127.0.0.1:8080"
 
@@ -40,7 +41,7 @@ def main():
                      {"cellId": cellId,
                       "name": get_random_string(),
                       "email": get_random_string() + "@gmail.com",
-                      "activationDate": 123123123}))
+                      "activationDate": int(time.time())}))
 
     print('Initialization finished successfuly')
 
