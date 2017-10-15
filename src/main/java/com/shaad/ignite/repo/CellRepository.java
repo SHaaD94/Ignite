@@ -9,11 +9,7 @@ public interface CellRepository {
 
     void saveCell(long cellId);
 
-    void saveCtn(long cellId, long ctn);
-
-    boolean doesCtnExist(long ctn);
-
-    void saveProfile(long ctn, Profile profile);
+    void saveProfile(long cellId, Profile profile);
 
     Collection<Profile> getProfilesByCellId(long cellId);
 }

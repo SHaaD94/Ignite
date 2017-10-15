@@ -1,4 +1,5 @@
 import json
+import random
 import requests
 
 server_url = "http://127.0.0.1:8080"
@@ -26,20 +27,18 @@ def post(url, data):
 def main():
     global server_url
     print('Starting initialization')
-    lastCtn = 9000000
-    for cellId in Range(1, 1000):
+    for cellId in range(1, 1000):
         post(server_url + '/cells', json.dumps({"id": cellId}))
-        for profileCount in random.randint(1, 100):
-            lastCtn = lastCtn + 1
+        for _ in range(1, random.randint(2, 100)):
             post(server_url + '/profiles',
-                 post(server_url + '/ctns', json.dumps({"id": cellId, "cell_id": lastCtn}))
-            json.dumps(
-                {"ctn": cellId + 9000000,
-                 "name": "asdasd",
-                 "email": "as@email.com",
-                 "activationDate": 123123123}))
+                 json.dumps(
+                     {"cellId": cellId,
+                      "name": "asdasd",
+                      "email": "as@email.com",
+                      "activationDate": 123123123}))
 
-            print('Initialization finished successfuly')
+    print('Initialization finished successfuly')
 
-        if __name__ == '__main__':
-            main()
+
+if __name__ == '__main__':
+    main()

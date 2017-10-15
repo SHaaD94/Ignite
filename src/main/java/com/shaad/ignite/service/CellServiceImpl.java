@@ -3,7 +3,6 @@ package com.shaad.ignite.service;
 import com.google.inject.Inject;
 import com.shaad.ignite.domain.Profile;
 import com.shaad.ignite.dto.ProfileDTO;
-import com.shaad.ignite.exception.CTNDoesNotExistException;
 import com.shaad.ignite.exception.CellDoesNotExistException;
 import com.shaad.ignite.repo.CellRepository;
 
@@ -24,20 +23,12 @@ public class CellServiceImpl implements CellService {
     }
 
     @Override
-    public void saveCtn(long cellId, long ctn) {
+    public void saveProfile(long cellId, ProfileDTO profileDTO) {
         if (!cellRepository.doesCellExist(cellId)) {
             throw new CellDoesNotExistException(cellId);
         }
-        cellRepository.saveCtn(cellId, ctn);
-    }
-
-    @Override
-    public void saveProfile(ProfileDTO profileDTO) {
-        if (!cellRepository.doesCtnExist(profileDTO.getCtn())) {
-            throw new CTNDoesNotExistException(profileDTO.getCtn());
-        }
-        cellRepository.saveProfile(profileDTO.getCtn(),
-                new Profile(profileDTO.getName(), profileDTO.getEmail(), profileDTO.getActivationDate()));
+        cellRepository.saveProfile(cellId,
+                new Profile(null, profileDTO.getName(), profileDTO.getEmail(), profileDTO.getActivationDate()));
     }
 
     @Override
@@ -45,16 +36,19 @@ public class CellServiceImpl implements CellService {
         if (!cellRepository.doesCellExist(cellId)) {
             throw new CellDoesNotExistException(cellId);
         }
-
         return cellRepository
                 .getProfilesByCellId(cellId)
                 .stream()
-                .map(x -> mapToDTO(cellId, x))
+                .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
 
-    private ProfileDTO mapToDTO(long cellId, Profile profile) {
-        return new ProfileDTO(cellId, profile.getName(), profile.getEmail(), profile.getActivationDate());
+    private ProfileDTO mapToDTO(Profile profile) {
+        return new ProfileDTO(
+                profile.getCtn(),
+                profile.getName(),
+                profile.getEmail(),
+                profile.getActivationDate());
     }
 
 }

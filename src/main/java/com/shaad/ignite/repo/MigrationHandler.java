@@ -47,10 +47,10 @@ public class MigrationHandler {
     private void v1() {
         IgniteCache cache = ignite.getOrCreateCache(MAIN);
         SqlFieldsQuery createProfile = new SqlFieldsQuery(
-                "CREATE TABLE IF NOT EXISTS public.Profile (ctn int, name varchar, email varchar, activationDate long, PRIMARY KEY (ctn))");
+                "CREATE TABLE IF NOT EXISTS public.Profile (ctn long, name varchar, email varchar, activationDate long, PRIMARY KEY (ctn))");
         cache.query(createProfile);
         SqlFieldsQuery createCell2Ctn = new SqlFieldsQuery(
-                "CREATE TABLE IF NOT EXISTS public.Cell2Ctn(cell_id int, ctn int PRIMARY KEY)");
+                "CREATE TABLE IF NOT EXISTS public.Cell2Ctn(cell_id long, ctn long PRIMARY KEY)");
         cache.query(createCell2Ctn);
         SqlFieldsQuery indexQuery = new SqlFieldsQuery(
                 "CREATE INDEX idx_ctn_to_cell_id ON public.Cell2Ctn (cell_id)"

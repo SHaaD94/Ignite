@@ -11,6 +11,7 @@ import org.rapidoid.setup.On;
 
 import java.util.Date;
 
+import static com.shaad.ignite.util.NumberUtil.safeCastToLong;
 import static org.h2.mvstore.DataUtils.checkArgument;
 
 public class ProfileController implements Controller {
@@ -27,20 +28,21 @@ public class ProfileController implements Controller {
     }
 
     private Object saveProfile(Req req) {
-        Object ctn = req.data("ctn");
+        Object cellId = req.data("cellId");
         String name = req.data("name");
         String email = req.data("email");
         Object activationDate = req.data("activationDate");
-        checkArgument(ctn != null, "Ctn should exist");
+        checkArgument(cellId != null, "cellId should exist");
         checkArgument(!Strings.isNullOrEmpty(name), "Name should exist");
         checkArgument(!Strings.isNullOrEmpty(email), "Email should exist");
         checkArgument(activationDate != null, "Activation date should exist");
 
-        cellService.saveProfile(new ProfileDTO(
-                Long.parseLong(ctn.toString()),
-                name,
-                email,
-                new Date(Long.parseLong(activationDate.toString()))));
+        cellService.saveProfile(safeCastToLong(cellId),
+                new ProfileDTO(
+                        null,
+                        name,
+                        email,
+                        new Date(safeCastToLong(activationDate))));
 
         return new SuccessDTO();
     }

@@ -10,7 +10,6 @@ public class ControllersModule extends AbstractModule {
         Multibinder<Controller> controllers = Multibinder.newSetBinder(binder(), Controller.class);
         controllers.addBinding().to(CellController.class);
         controllers.addBinding().to(ExceptionController.class);
-        controllers.addBinding().to(CtnController.class);
         controllers.addBinding().to(ProfileController.class);
     }
 }

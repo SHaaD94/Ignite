@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class ProfileDTO {
     @JsonProperty("ctn")
-    private final long ctn;
+    private final Long ctn;
 
     @JsonProperty("name")
     private final String name;
@@ -17,14 +17,14 @@ public class ProfileDTO {
     @JsonProperty("activationDate")
     private final Date activationDate;
 
-    public ProfileDTO(long ctn, String name, String email, Date activationDate) {
+    public ProfileDTO(Long ctn, String name, String email, Date activationDate) {
         this.ctn = ctn;
         this.name = name;
         this.email = email;
         this.activationDate = activationDate;
     }
 
-    public long getCtn() {
+    public Long getCtn() {
         return ctn;
     }
 
