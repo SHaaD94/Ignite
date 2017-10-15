@@ -1,8 +1,8 @@
+import datetime
 import json
 import random
 import requests
 import string
-import time
 from threading import Thread
 
 server_url = "http://127.0.0.1:8080"
@@ -38,10 +38,13 @@ def generate_data(cell_ids):
         for _ in range(1, random.randint(2, 100)):
             post(server_url + '/profiles',
                  json.dumps(
-                     {"cellId": cell_id,
-                      "name": get_random_string(),
-                      "email": get_random_string() + "@gmail.com",
-                      "activationDate": int(time.time())}))
+                     {
+                         "cellId": cell_id,
+                         "name": get_random_string(),
+                         "email": get_random_string() + "@gmail.com",
+                         "activateDate": '{0:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
+                     }
+                 ))
 
 
 def main():

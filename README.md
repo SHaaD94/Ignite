@@ -29,6 +29,6 @@ POST /profiles
     "cellId": 123,
     "name": "Ivan Ivanov",
     "email": "i.ivanov@gmail.com",
-    "activationDate": 1508074728
+    "activateDate": "2017-02-24 12:45:00"
 }
 ```

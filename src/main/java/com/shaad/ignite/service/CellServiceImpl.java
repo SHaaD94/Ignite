@@ -5,6 +5,7 @@ import com.shaad.ignite.domain.Profile;
 import com.shaad.ignite.dto.ProfileDTO;
 import com.shaad.ignite.exception.CellDoesNotExistException;
 import com.shaad.ignite.repo.CellRepository;
+import com.shaad.ignite.util.DateUtil;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -28,7 +29,11 @@ public class CellServiceImpl implements CellService {
             throw new CellDoesNotExistException(cellId);
         }
         cellRepository.saveProfile(cellId,
-                new Profile(null, profileDTO.getName(), profileDTO.getEmail(), profileDTO.getActivationDate()));
+                new Profile(
+                        null,
+                        profileDTO.getName(),
+                        profileDTO.getEmail(),
+                        DateUtil.parseDate(profileDTO.getActivateDate())));
     }
 
     @Override
@@ -48,7 +53,7 @@ public class CellServiceImpl implements CellService {
                 profile.getCtn(),
                 profile.getName(),
                 profile.getEmail(),
-                profile.getActivationDate());
+                DateUtil.toString(profile.getActivationDate()));
     }
 
 }

@@ -2,8 +2,6 @@ package com.shaad.ignite.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Date;
-
 public class ProfileDTO {
     @JsonProperty("ctn")
     private final Long ctn;
@@ -14,14 +12,14 @@ public class ProfileDTO {
     @JsonProperty("email")
     private final String email;
 
-    @JsonProperty("activationDate")
-    private final Date activationDate;
+    @JsonProperty("activateDate")
+    private final String activateDate;
 
-    public ProfileDTO(Long ctn, String name, String email, Date activationDate) {
+    public ProfileDTO(Long ctn, String name, String email, String activateDate) {
         this.ctn = ctn;
         this.name = name;
         this.email = email;
-        this.activationDate = activationDate;
+        this.activateDate = activateDate;
     }
 
     public Long getCtn() {
@@ -36,7 +34,7 @@ public class ProfileDTO {
         return email;
     }
 
-    public Date getActivationDate() {
-        return activationDate;
+    public String getActivateDate() {
+        return activateDate;
     }
 }
